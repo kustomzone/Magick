@@ -58,6 +58,12 @@ export default function (app: Application): void {
       context.data?.projectId ||
       data.projectId
 
+    const agentId =
+      context.params?.agentId ||
+      context.result.agentId ||
+      context.data?.agentId ||
+      data.agentId
+
     // don't publish if we are an agent
     if (app.get('isAgent')) return
 
@@ -65,7 +71,8 @@ export default function (app: Application): void {
     if (context.method === 'patch') return
 
     // Publish all events to the authenticated user channel
-    const channel = app.channel(projectId)
-    return channel
+    const projectChannel = app.channel(projectId)
+    const agentChannel = app.channel(`agent:${agentId}`)
+    return [projectChannel, agentChannel]
   })
 }
