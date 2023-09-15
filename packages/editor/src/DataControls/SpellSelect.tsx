@@ -7,9 +7,7 @@ import { useSnackbar } from 'notistack'
 import { useEffect } from 'react'
 
 import { useConfig } from '@magickml/client-core'
-import { spellApi } from '../state/api/spells'
-import { useAppDispatch } from '../state/hooks'
-import { openTab } from '../state/tabs'
+import { openTab, spellApi, useAppDispatch } from '@magickml/state'
 
 // Default graph for spells
 const defaultGraph = getTemplates().spells[0].graph

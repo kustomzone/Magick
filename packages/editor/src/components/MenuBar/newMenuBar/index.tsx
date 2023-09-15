@@ -5,14 +5,12 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useModal } from '../../../contexts/ModalProvider'
-import { toggleAutoSave } from '../../../state/preferences'
-import { RootState } from '../../../state/store'
-import { Tab, activeTabSelector, changeEditorLayout } from '../../../state/tabs'
 import { Menu, MenuItem, IconButton } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import css from '../menuBar.module.css'
 import { styled } from '@mui/material/styles'
 import { NestedMenuItem } from 'mui-nested-menu'
+import { RootState, Tab, activeTabSelector, changeEditorLayout, toggleAutoSave } from '@magickml/state'
 
 /**
  * MenuBar component
@@ -578,16 +576,16 @@ const NewMenuBar = () => {
                           {menuBarItems[item].items[subMenuKey].hasOwnProperty(
                             'isActive'
                           ) && (
-                            <span
-                              className={
-                                menuBarItems[item].items[subMenuKey].isActive
-                                  ? css['preference-active']
-                                  : css['preference-notActive']
-                              }
-                            >
-                              ●{' '}
-                            </span>
-                          )}
+                              <span
+                                className={
+                                  menuBarItems[item].items[subMenuKey].isActive
+                                    ? css['preference-active']
+                                    : css['preference-notActive']
+                                }
+                              >
+                                ●{' '}
+                              </span>
+                            )}
                           {subMenuKey
                             .replace(/_/g, ' ')
                             .charAt(0)

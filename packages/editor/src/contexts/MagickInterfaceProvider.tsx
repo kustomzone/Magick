@@ -14,8 +14,8 @@ import {
   SpellInterface,
   SupportedLanguages,
 } from '@magickml/core'
+import { spellApi } from '@magickml/state'
 import { createContext, useContext } from 'react'
-import { spellApi } from '../state/api/spells'
 
 // Create context for EditorContext type
 const Context = createContext<EditorContext | undefined>(undefined)

@@ -5,19 +5,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import TabBar from '../../components/TabBar/TabBar'
 import Workspaces from '../../components/Workspaces'
-import { RootState } from '../../state/store'
-import {
-  activeTabSelector,
-  closeTab,
-  openTab,
-  selectAllTabs,
-} from '../../state/tabs'
 import Events from '../EventWindow'
 import Requests from '../RequestWindow'
 import Settings from '../settings/SettingsWindow'
 import Documents from '../DocumentWindow'
 import Agents from '../agents/AgentManagerWindow';
 import { ClientPluginManager, pluginManager } from '@magickml/core'
+import { RootState, activeTabSelector, closeTab, openTab, selectAllTabs } from '@magickml/state'
 /**
  * Magick component
  * @param empty flag to control whether the workspaces should be rendered or not
@@ -35,16 +29,16 @@ const Magick = ({ empty = false }): JSX.Element => {
 
   const pluginComponents = []
 
-  ;(pluginManager as ClientPluginManager)
-    .getGroupedClientRoutes()
-    .forEach(plugin => {
-      plugin.routes.map(route => {
-        pluginComponents.push({
-          name: route.path.charAt(1).toUpperCase() + route.path.slice(2),
-          component: route.component,
+    ; (pluginManager as ClientPluginManager)
+      .getGroupedClientRoutes()
+      .forEach(plugin => {
+        plugin.routes.map(route => {
+          pluginComponents.push({
+            name: route.path.charAt(1).toUpperCase() + route.path.slice(2),
+            component: route.component,
+          })
         })
       })
-    })
 
   const componentMapping = {
     Events,

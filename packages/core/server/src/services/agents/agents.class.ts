@@ -72,6 +72,9 @@ export class AgentService<
 
     // get the socket from the params
     const connection = params.connection
+
+    if (!connection) throw new Error('connection is required')
+
     const oldAgentChannel = app.channels.filter(channel =>
       agentId.match(/agent:/)
     )[0]

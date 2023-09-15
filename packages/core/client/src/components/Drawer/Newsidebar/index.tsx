@@ -233,7 +233,7 @@ export function NewSidebar(DrawerProps): JSX.Element {
   const globalConfig = useSelector((state: any) => state.globalConfig)
   const token = globalConfig?.token
   const { treeData, setTreeData,
-    setAgentUpdate} = useTreeData()
+    setAgentUpdate } = useTreeData()
   const handleDrop = (newTree: NodeModel[]) => {
     setTreeData(newTree)
   }
@@ -317,33 +317,33 @@ export function NewSidebar(DrawerProps): JSX.Element {
 
   useEffect(() => {
     if (!config.apiUrl) return
-    ;(async () => {
-      const res = await fetch(
-        `${config.apiUrl}/agents?projectId=${config.projectId}`,
-        {
-          headers: STANDALONE
-            ? { Authorization: `Bearer ${DEFAULT_USER_TOKEN}` }
-            : { Authorization: `Bearer ${token}` },
+      ; (async () => {
+        const res = await fetch(
+          `${config.apiUrl}/agents?projectId=${config.projectId}`,
+          {
+            headers: STANDALONE
+              ? { Authorization: `Bearer ${DEFAULT_USER_TOKEN}` }
+              : { Authorization: `Bearer ${token}` },
+          }
+        )
+        const json = await res.json()
+        // if data.length === 0  create new agent
+        if (json.data.length === 0) {
+          await createNew({
+            name: "Default Agent",
+            projectId: config.projectId,
+            enabled: false,
+            publicVariables: '{}',
+            secrets: '{}',
+            default: true,
+          })
+          setData(json.data)
+        } else {
+          setData(json.data)
         }
-      )
-      const json = await res.json()
-      // if data.length === 0  create new agent
-      if (json.data.length === 0) {
-        await createNew({
-          name: "Default Agent",
-          projectId: config.projectId,
-          enabled: false,
-          publicVariables: '{}',
-          secrets: '{}',
-          default: true,
-        })
-        setData(json.data)
-      } else {
-        setData(json.data)
-      }
 
-      // setIsLoading(false)
-    })()
+        // setIsLoading(false)
+      })()
   }, [config?.apiUrl])
 
   useEffect(() => {
