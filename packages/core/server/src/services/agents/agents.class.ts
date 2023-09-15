@@ -4,7 +4,7 @@ import type { Params } from '@feathersjs/feathers'
 import { KnexService } from '@feathersjs/knex'
 import type { KnexAdapterParams, KnexAdapterOptions } from '@feathersjs/knex'
 import { app } from '@magickml/server-core'
-import md5 from 'md5';
+import md5 from 'md5'
 import type { Application } from '../../declarations'
 import type { Agent, AgentData, AgentPatch, AgentQuery } from './agents.schema'
 import { Queue } from 'bullmq'
@@ -65,10 +65,28 @@ export class AgentService<
     return { jobId: job.id }
   }
 
+  async subscribe(agentId: string, params: ServiceParams) {
+    // check for socket io
+    if (!params.provider)
+      throw new Error('subscribe is only available via socket io')
+
+    // get the socket from the params
+    const connection = params.connection
+    const oldAgentChannel = app.channels.filter(channel =>
+      agentId.match(/agent:/)
+    )[0]
+    // leave the old channel
+    app.channel(oldAgentChannel).leave(connection)
+
+    // join the new channel
+    app.channel(`agent:${agentId}`).join(connection)
+
+    return true
+  }
+
   async create(
     data: AgentData | AgentData[] | any
   ): Promise<Agent | Agent[] | any> {
-
     // ADDING REST API KEY TO AGENT's DATA
     if (data.data) {
       data.data = JSON.stringify({
@@ -100,4 +118,3 @@ export const getOptions = (app: Application): KnexAdapterOptions => {
     multi: ['remove'],
   }
 }
-
