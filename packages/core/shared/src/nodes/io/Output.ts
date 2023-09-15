@@ -166,7 +166,7 @@ export class Output extends MagickComponent<void> {
         } else if (!t.handler) {
           console.error('output type handler is not defined', t)
         } else {
-          t.handler({
+          await t.handler({
             output,
             agent: agent,
             event,
