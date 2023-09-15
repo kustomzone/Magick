@@ -15,7 +15,8 @@ import { AgentResult, AgentRunJob } from './Agent'
 import { AGENT_RESPONSE_TIMEOUT_MSEC } from '@magickml/config'
 
 export type RunRootSpellArgs = {
-  agent: Agent
+  agentId: string
+  agent?: Agent
   inputs: MagickSpellInput
   componentName?: string
   runSubspell?: boolean
@@ -41,7 +42,7 @@ export class AgentCommander extends EventEmitter {
   }
 
   runSpellWithResponse(args: RunRootSpellArgs) {
-    const { agent } = args
+    const { agentId } = args
     return new Promise((resolve, reject) => {
       ;(async () => {
         setTimeout(() => {
@@ -50,7 +51,7 @@ export class AgentCommander extends EventEmitter {
 
         let jobId: null | string = null
 
-        const agentMessageName = AGENT_RUN_RESULT(agent.id)
+        const agentMessageName = AGENT_RUN_RESULT(agentId)
 
         this.pubSub.subscribe(agentMessageName, (data: AgentResult) => {
           if (data.result.error) {
@@ -66,7 +67,7 @@ export class AgentCommander extends EventEmitter {
           }
         })
 
-        const agentErrorName = AGENT_RUN_ERROR(agent.id)
+        const agentErrorName = AGENT_RUN_ERROR(agentId)
         this.pubSub.subscribe(agentErrorName, (data: AgentResult) => {
           if (data.jobId === jobId) {
             this.pubSub.unsubscribe(agentErrorName)
@@ -83,6 +84,7 @@ export class AgentCommander extends EventEmitter {
   private runRootSpellArgsToString(
     jobId: string,
     {
+      agentId,
       agent,
       inputs,
       componentName,
@@ -95,7 +97,7 @@ export class AgentCommander extends EventEmitter {
   ) {
     return JSON.stringify({
       jobId,
-      agentId: agent.id,
+      agentId,
       spellId: spellId || agent.rootSpellId,
       inputs,
       componentName,
@@ -107,22 +109,22 @@ export class AgentCommander extends EventEmitter {
   }
 
   async runSubSpell(args: RunRootSpellArgs) {
-    const { agent } = args
+    const { agentId } = args
     const jobId = uuidv4()
     await this.pubSub.publish(
-      AGENT_RUN_JOB(agent.id),
+      AGENT_RUN_JOB(agentId),
       this.runRootSpellArgsToString(jobId, args)
     )
     return jobId
   }
 
   async runSpell(args: RunRootSpellArgs) {
-    const { agent } = args
-    this.logger.debug(`Running Spell on Agent: ${agent.id}`)
-    this.logger.debug(AGENT_RUN_JOB(agent.id))
+    const { agentId } = args
+    this.logger.debug(`Running Spell on Agent: ${agentId}`)
+    this.logger.debug(AGENT_RUN_JOB(agentId))
     const jobId = uuidv4()
     await this.pubSub.publish(
-      AGENT_RUN_JOB(agent.id),
+      AGENT_RUN_JOB(agentId),
       this.runRootSpellArgsToString(jobId, args)
     )
     return jobId
