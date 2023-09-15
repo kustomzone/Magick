@@ -326,7 +326,8 @@ const EventHandler = ({ pubSub, tab }) => {
    */
   const runSpell = async (event, data) => {
     // run the spell in the spell runner service
-    client.service('spell-runner').create(data)
+    console.log('DATA', data)
+    // client.service('spell-runner').create(data)
   }
 
   const handlerMap = {

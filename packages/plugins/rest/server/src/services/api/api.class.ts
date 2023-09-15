@@ -83,7 +83,7 @@ export class ApiService<ServiceParams extends ApiParams = ApiParams>
 
     try {
       const result = await agentCommander.runSpellWithResponse({
-        agent,
+        agentId: agent.id,
         spellId,
         inputs: {
           [`Input - REST API (GET)`]: {
@@ -131,7 +131,7 @@ export class ApiService<ServiceParams extends ApiParams = ApiParams>
 
     try {
       const result = await agentCommander.runSpellWithResponse({
-        agent,
+        agentId: agent.id,
         spellId,
         inputs: {
           [`Input - REST API (POST)`]: {
@@ -180,7 +180,7 @@ export class ApiService<ServiceParams extends ApiParams = ApiParams>
 
     try {
       const result = await agentCommander.runSpellWithResponse({
-        agent,
+        agentId,
         spellId,
         inputs: {
           [`Input - REST API (UPDATE)`]: {
@@ -227,7 +227,7 @@ export class ApiService<ServiceParams extends ApiParams = ApiParams>
 
     try {
       const result = await agentCommander.runSpellWithResponse({
-        agent,
+        agentId,
         spellId,
         inputs: {
           [`Input - REST API (DELETE)`]: {

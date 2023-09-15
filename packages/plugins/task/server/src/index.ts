@@ -66,7 +66,7 @@ class TaskManager {
           inputs: {
             'Input - Task': task,
           },
-          agent,
+          agentId: agent.id,
           secrets: agent.secrets,
           publicVariables: agent.publicVariables,
         })

@@ -77,7 +77,7 @@ export async function runSpell(
         channelType: 'msg',
       },
     },
-    agent: agent,
+    agentId: agent.id,
     secrets: agent.secrets,
     publicVariables: agent.publicVariables,
     runSubspell: true,

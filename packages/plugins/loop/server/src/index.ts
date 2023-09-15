@@ -56,7 +56,7 @@ class LoopManager {
             entities: [],
           },
         },
-        agent,
+        agentId: agent.id,
         secrets: agent.secrets,
         publicVariables: agent.publicVariables,
       })

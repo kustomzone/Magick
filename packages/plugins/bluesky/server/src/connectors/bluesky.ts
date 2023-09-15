@@ -107,7 +107,7 @@ export class BlueskyConnector {
             rawData: JSON.stringify(notif),
           },
         },
-        agent: this.agent,
+        agentId: this.agent.id,
         secrets: this.agent.secrets,
         publicVariables: this.agent.publicVariables,
         runSubspell: true,
